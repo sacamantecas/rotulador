@@ -1,5 +1,6 @@
 @echo off
 set minombre=%~n0
+set nolotengo=//////////////////////////ÛÛÛ/////ÛÛÛ///////////////////////////
 set escape=\
 set texto=
 
@@ -8,7 +9,10 @@ set "texto=%texto% %~1"
 shift
 if [%1] NEQ [] goto recopilacion
 set texto=%texto:~1%
-if "%texto%" EQU "" goto error
+if "%texto%" EQU "" (
+	call :error
+	goto limpieza 
+)
 
 set fila=0
 set desde=0
@@ -18,7 +22,7 @@ set linea=
 set lineaprevia=
 set columna=0
 :columna
-set mat=//////////////////////////ÛÛÛ/////ÛÛÛ///////////////////////////
+set mat=%nolotengo%
 call set l=%%texto:~%columna%,1%%
 if "%l%" EQU "" if "%especial%" EQU "s" (set l=x) else (goto finfila)
 if "%especial%" EQU "s" (
@@ -142,21 +146,45 @@ if %fila% EQU 0 set lineaprevia=%lineaprevia%////////
 set /a columna=%columna%+1
 call set trozo=%%mat:~%desde%,8%%
 set linea=%linea%%trozo%
+if "%mat%" EQU "%nolotengo%" set fallo=s
 goto columna
 
 :finfila
-if %fila% EQU 0 echo %lineaprevia%
+if %fila% EQU 0 (
+	if "%fallo%" EQU "s" call :nolotengo
+	echo %lineaprevia%
+)
 echo %linea%
 set /a fila+=1
 set /a desde+=8
 if %fila% NEQ 8 goto fila
-goto :EOF
+goto :limpieza
 
 :error
 echo uso: %minombre% cadena de texto
 echo      entrecomillar la cadena te permite poner espacios en cualquier lado
+:nolotengo
 echo      los caracteres especiales se ponen con %escape% seguido de otro caracter:
 echo      " - %escape%'      ) - %escape%(      < - %escape%m      > - %escape%M      | - %escape%p      ³ - %escape%P
 echo        - %escape%a      ‚ - %escape%e      ¡ - %escape%i      ¢ - %escape%o      £ - %escape%u       - %escape%E
 echo      ¤ - %escape%n      ¥ - %escape%N      ^^ - %escape%`      ­ - %escape%!      ¨ - %escape%?      %escape% - %escape%%escape%
+echo.
 goto :EOF
+
+
+:limpieza
+set columna=
+set desde=
+set escape=
+set especial=
+set fallo=
+set fila=
+set l=
+set linea=
+set lineaprevia=
+set mat=
+set minombre=
+set nolotengo=
+set texto=
+set especial=
+set trozo=
