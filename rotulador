@@ -1,0 +1,215 @@
+#!/bin/bash
+#
+# Este script estУЁ desarrollado y escrito para usar en un terminal con UTF-8
+# Editarlo con vi tiene riesgos porque lo convierte y no hay certeza de lo que se grabe
+# Se puede editar con vi -b o bien desde windows con notepad++ (cuando le da la gana)
+# Para trastear con las matrices se puede codificar como OEM-US, 850, Windows 1252, etc.
+# (Codificar, no convertir!!)
+# A veces notepad++ lo coge como UTF-8 pero otras lo interpreta como cirУ­lico (8859-5)
+# Si el resultado se redirige a "iconv -f 437" salen las letrotas mУЁs nУ­tidas
+
+espacios="                                                                                                    "
+avances=$'\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n'
+
+asigna_matriz() {
+   case $letra in 
+   " " ) matriz="                                                                " ;;
+   "!" ) matriz="   лл     лллл    лллл     лл      лл              лл           " ;;
+   "\"") matriz=" лл лл   лл лл   лл лл                                          " ;;
+   "#" ) matriz=" лл лл   лл лл  ллллллл  лл лл  ллллллл  лл лл   лл лл          " ;;
+   "$" ) matriz="   лл     ллллл  лл       лллл       лл  ллллл     лл           " ;;
+   "%" ) matriz="        лл   лл лл  лл     лл     лл     лл  лл лл   лл         " ;;
+   "&" ) matriz="  ллл    лл лл    ллл    ллл лл лл ллл  лл  лл   ллл лл         " ;;
+   "'" ) matriz="   лл      лл     лл                                            " ;;
+   "(" ) matriz="    лл     лл     лл      лл      лл       лл       лл          " ;;
+   ")" ) matriz="  лл       лл       лл      лл      лл     лл     лл            " ;;
+   "*" ) matriz="         лл  лл   лллл  лллллллл  лллл   лл  лл                 " ;;
+   "+" ) matriz="           лл      лл    лллллл    лл      лл                   " ;;
+   "," ) matriz="                                           лл      лл     лл    " ;;
+   "-" ) matriz="                         лллллл                                 " ;;
+   "." ) matriz="                                           лл      лл           " ;;
+   "/" ) matriz="     лл     лл     лл     лл     лл     лл      л               " ;;
+   "0" ) matriz=" ллллл  лл   лл лл  ллл лл лллл лллл лл ллл  лл  ллллл          " ;;
+   "1" ) matriz="   лл     ллл      лл      лл      лл      лл    лллллл         " ;;
+   "2" ) matriz="  лллл   лл  лл      лл    ллл    лл     лл  лл  лллллл         " ;;
+   "3" ) matriz="  лллл   лл  лл      лл    ллл       лл  лл  лл   лллл          " ;;
+   "4" ) matriz="   ллл    лллл   лл лл  лл  лл  ллллллл     лл     лллл         " ;;
+   "5" ) matriz=" лллллл  лл      ллллл       лл      лл  лл  лл   лллл          " ;;
+   "6" ) matriz="   ллл    лл     лл      ллллл   лл  лл  лл  лл   лллл          " ;;
+   "7" ) matriz=" лллллл  лл  лл      лл     лл     лл      лл      лл           " ;;
+   "8" ) matriz="  лллл   лл  лл  лл  лл   лллл   лл  лл  лл  лл   лллл          " ;;
+   "9" ) matriz="  лллл   лл  лл  лл  лл   ллллл      лл     лл    ллл           " ;;
+   ":" ) matriz="           лл      лл                      лл      лл           " ;;
+   ";" ) matriz="           лл      лл                      лл      лл     лл    " ;;
+   "<" ) matriz="    лл     лл     лл     лл       лл       лл       лл          " ;;
+   "=" ) matriz="                 лллллл                  лллллл                 " ;;
+   ">" ) matriz=" лл       лл       лл       лл     лл     лл     лл             " ;;
+   "?" ) matriz="  лллл   лл  лл      лл     лл     лл              лл           " ;;
+   "@" ) matriz=" ллллл  лл   лл лл лллл лл лллл лл лллл лл       лллл           " ;;
+   "A" ) matriz="   лл     лллл   лл  лл  лл  лл  лллллл  лл  лл  лл  лл         " ;;
+   "B" ) matriz="лллллл   лл  лл  лл  лл  ллллл   лл  лл  лл  лл лллллл          " ;;
+   "C" ) matriz="  лллл   лл  лл лл      лл      лл       лл  лл   лллл          " ;;
+   "D" ) matriz="ллллл    лл лл   лл  лл  лл  лл  лл  лл  лл лл  ллллл           " ;;
+   "E" ) matriz="ллллллл  лл   л  лл л    лллл    лл л    лл   л ллллллл         " ;;
+   "F" ) matriz="ллллллл  лл   л  лл л    лллл    лл л    лл     лллл            " ;;
+   "G" ) matriz="  лллл   лл  лл лл      лл      лл  ллл  лл  лл   ллллл         " ;;
+   "H" ) matriz=" лл  лл  лл  лл  лл  лл  лллллл  лл  лл  лл  лл  лл  лл         " ;;
+   "I" ) matriz="  лллл     лл      лл      лл      лл      лл     лллл          " ;;
+   "J" ) matriz="   лллл     лл      лл      лл  лл  лл  лл  лл   лллл           " ;;
+   "K" ) matriz="ллл  лл  лл  лл  лл лл   лллл    лл лл   лл  лл ллл  лл         " ;;
+   "L" ) matriz="лллл     лл      лл      лл      лл   л  лл  лл ллллллл         " ;;
+   "M" ) matriz="лл   лл ллл ллл ллллллл ллллллл лл л лл лл   лл лл   лл         " ;;
+   "N" ) matriz="лл   лл ллл  лл лллл лл лл лллл лл  ллл лл   лл лл   лл         " ;;
+   "O" ) matriz="  ллл    лл лл  лл   лл лл   лл лл   лл  лл лл    ллл           " ;;
+   "P" ) matriz="лллллл   лл  лл  лл  лл  ллллл   лл      лл     лллл            " ;;
+   "Q" ) matriz="  лллл   лл  лл  лл  лл  лл  лл  лл ллл   лллл      ллл         " ;;
+   "R" ) matriz="лллллл   лл  лл  лл  лл  ллллл   лл лл   лл  лл ллл  лл         " ;;
+   "S" ) matriz="  лллл   лл  лл  ллл      ллл       ллл  лл  лл   лллл          " ;;
+   "T" ) matriz=" лллллл  л лл л    лл      лл      лл      лл     лллл          " ;;
+   "U" ) matriz=" лл  лл  лл  лл  лл  лл  лл  лл  лл  лл  лл  лл  лллллл         " ;;
+   "V" ) matriz=" лл  лл  лл  лл  лл  лл  лл  лл  лл  лл   лллл     лл           " ;;
+   "W" ) matriz="лл   лл лл   лл лл   лл лл л лл ллллллл ллл ллл лл   лл         " ;;
+   "X" ) matriz="лл   лл лл   лл  лл лл    ллл     ллл    лл лл  лл   лл         " ;;
+   "Y" ) matriz=" лл  лл  лл  лл  лл  лл   лллл     лл      лл     лллл          " ;;
+   "Z" ) matriz="ллллллл лл   лл л   лл     лл     лл  л  лл  лл ллллллл         " ;;
+   "[" ) matriz="  лллл    лл      лл      лл      лл      лл      лллл          " ;;
+   "\\") matriz="лл       лл       лл       лл       лл       лл       л         " ;;
+   "]" ) matriz="  лллл      лл      лл      лл      лл      лл    лллл          " ;;
+   "^" ) matriz="   л      ллл    лл лл  лл   лл                                 " ;;
+   "_" ) matriz="                                                        лллллллл" ;;
+   "\`") matriz="  лл      лл       лл                                           " ;;
+   "a" ) matriz="                 лллл       лл   ллллл  лл  лл   ллл лл         " ;;
+   "b" ) matriz="ллл      лл      лл      ллллл   лл  лл  лл  лл лл ллл          " ;;
+   "c" ) matriz="                  лллл   лл  лл  лл      лл  лл   лллл          " ;;
+   "d" ) matriz="   ллл      лл      лл   ллллл  лл  лл  лл  лл   ллл лл         " ;;
+   "e" ) matriz="                  лллл   лл  лл  лллллл  лл       лллл          " ;;
+   "f" ) matriz="   ллл    лл лл   лл     лллл     лл      лл     лллл           " ;;
+   "g" ) matriz="                 ллл лл лл  лл  лл  лл   ллллл      лл  ллллл   " ;;
+   "h" ) matriz="ллл      лл      лл лл   ллл лл  лл  лл  лл  лл ллл  лл         " ;;
+   "i" ) matriz="   лл             ллл      лл      лл      лл     лллл          " ;;
+   "j" ) matriz="     лл              лл      лл      лл  лл  лл  лл  лл   лллл  " ;;
+   "k" ) matriz="ллл      лл      лл  лл  лл лл   лллл    лл лл  ллл  лл         " ;;
+   "l" ) matriz="  ллл      лл      лл      лл      лл      лл     лллл          " ;;
+   "m" ) matriz="                лл  лл  ллллллл ллллллл лл л лл лл   лл         " ;;
+   "n" ) matriz="                 ллллл   лл  лл  лл  лл  лл  лл  лл  лл         " ;;
+   "o" ) matriz="                  лллл   лл  лл  лл  лл  лл  лл   лллл          " ;;
+   "p" ) matriz="                лл ллл   лл  лл  лл  лл  ллллл   лл     лллл    " ;;
+   "q" ) matriz="                 ллл лл лл  лл  лл  лл   ллллл      лл     лллл " ;;
+   "r" ) matriz="                лл ллл   ллл лл  лл  лл  лл     лллл            " ;;
+   "s" ) matriz="                  ллллл  лл       лллл       лл  ллллл          " ;;
+   "t" ) matriz="   л      лл     ллллл    лл      лл      лл л     лл           " ;;
+   "u" ) matriz="                лл  лл  лл  лл  лл  лл  лл  лл   ллл лл         " ;;
+   "v" ) matriz="                 лл  лл  лл  лл  лл  лл   лллл     лл           " ;;
+   "w" ) matriz="                лл   лл лл л лл ллллллл ллллллл  лл лл          " ;;
+   "x" ) matriz="                лл   лл  лл лл    ллл    лл лл  лл   лл         " ;;
+   "y" ) matriz="                 лл  лл  лл  лл  лл  лл   ллллл      лл  ллллл  " ;;
+   "z" ) matriz="                 лллллл  л  лл     лл     лл  л  лллллл         " ;;
+   "{" ) matriz="    ллл    лл      лл    ллл       лл      лл       ллл         " ;;
+   "|" ) matriz="   лл      лл      лл              лл      лл      лл           " ;;
+   "}" ) matriz=" ллл       лл      лл       ллл    лл      лл    ллл            " ;;
+   "~" ) matriz=" ллл лл лл ллл                                                  " ;;
+   "УЉ") matriz="    ллл           лллл   лл  лл  лллллл  лл       лллл          " ;;
+   "У") matriz="    ллл          лллллл   лл      лллл    лл     лллллл         " ;;
+   "УЁ") matriz="   ллл           лллл       лл   ллллл  лл  лл   лллллл         " ;;
+   "У­") matriz="   ллл            ллл      лл      лл      лл     лллл          " ;;
+   "УГ") matriz="            ллл           лллл   лл  лл  лл  лл   лллл          " ;;
+   "У") matriz="   лллл          ллллл  лл   лл лл   лл лл   лл  ллллл          " ;;
+   "УК") matriz="           ллл          лл  лл  лл  лл  лл  лл   лллллл         " ;;
+   "УБ") matriz="         ллллл           ллллл   лл  лл  лл  лл  лл  лл         " ;;
+   "У") matriz=" лллллл          лл  лл  ллл лл  лллллл  лл ллл  лл  лл         " ;;
+   "ТП") matriz="   лл              лл     лл     лл      лл  лл   лллл          " ;;
+   "ТЁ") matriz="   лл      лл              лл      лл      лл      лл           " ;;
+   "ТК") matriz="          ллл    лл лл    ллл                                   " ;;
+   "т") matriz="   лл      лл      лл      лл      лл      лл      лл      лл   " ;;
+   *)   matriz="                          ллл     ллл                           " ;;
+   esac   
+}
+
+error() {
+   echo "uso: ${0##*/} [-h][-v][-t <terminal>] cadena de texto"
+   echo "     el centrado horizontal o vertical se aplica por defecto a stdout,"
+   echo "     pero se puede calcular para cualquier otro dispositivo vУЁlido,"
+   echo "     aunque mi salida siempre es por stdout"
+   echo "     entrecomillar la cadena te permite poner espacios delante y/o detras"
+   nolotengo
+}   
+
+nolotengo() {
+   echo "     los caracteres especiales \"\\\" y \"\`\" se ponen con un \"\\\" delante"
+   echo "     se pueden poner varias lУ­neas usando \"\\n\""
+   exit
+}
+
+
+# interpretar parУЁmetros
+while true ; do
+   if [ "$1" == "-h" ] ; then
+      centro_h=1
+      shift
+   elif [ "$1" == "-v" ] ; then 
+      centro_v=1
+      shift
+   elif [ "$1" == "-t" ] ; then
+      terminal="-F $2"
+      shift 2
+   else
+      break
+   fi
+done
+
+# aunque no haya centrado, necesito conocer la anchura para evitar el desbordamiento en las ringleras
+dimensiones=($(stty size $terminal 2>/dev/null))
+if [ ${#dimensiones} -ne 2 ] ; then
+   # simulo un terminal muy ancho pero no admito centrado
+   # esto pasa si el terminal no existe, es /dev/null, estamos en una redirecciУГn y situaciones similares
+   dimensiones=(8 8000)
+   centro_v=
+   centro_h=
+fi   
+
+
+texto="$*"
+if [ -z $texto ] ; then
+   read -N $((${dimensiones[0]}*${dimensiones[1]}/64)) texto
+   texto=${texto//$'\n'/\\n}
+fi   
+
+if [ ! -z "$texto" ] ; then
+
+   derecha=""
+   lineas_fisicas=0
+
+   [ $centro_v ]  &&  echo -n "${avances:0:${dimensiones[0]}}"
+   while [ ! -z "$texto" ] ; do # bucle de ringlera {
+      ringlera=${texto%%\\n*}
+      texto=${texto:$((${#ringlera}+2))}
+      # no distribuyo el texto, sУГlo recorto lo que se cae
+      ringlera=${ringlera:0:$((${dimensiones[1]}/8))}
+      lineas=$(($lineas + 8))
+      [ $centro_h ]  &&  derecha=${espacios:0:$(( (${dimensiones[1]}-${#ringlera}*8)/2 ))}
+
+      for fila in $(seq 0 7) ; do # bucle de fila {
+         linea=""
+         lineaprevia=""
+         
+         for ((columna=0 ; columna<${#ringlera}; ++columna)) ; do
+            letra=${ringlera:$columna:1}
+
+            if [ -n $letra ] ; then
+               [ $fila -gt 0 ]  ||  lineaprevia="${lineaprevia}        "
+               asigna_matriz
+
+               trozo=${matriz:$(($fila * 8)):8}
+               linea=$linea$trozo
+            fi
+         done
+
+         [ $fila -eq 0 ]  &&  echo "$derecha$lineaprevia"
+         echo "$derecha$linea"
+      done # bucle de fila }
+      
+   done # bucle de ringlera }
+   [ $centro_v ]  &&  echo -n "${avances:0:$(( (${dimensiones[0]}-$lineas)/2 -1)) }"
+else
+   error
+fi
